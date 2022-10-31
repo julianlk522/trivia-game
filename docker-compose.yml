@@ -3,10 +3,27 @@ services:
     server:
         container_name: 'php-apache'
         image: php:apache
-        volumes:
-            - './:/var/www/html/'
         ports:
             - 80:80
-# volumes:
-#     triviaServer:
-#         driver: local
+        volumes:
+            - './:/var/www/html/'
+    db:
+        container_name: 'mysql'
+        image: mysql
+        environment:
+            MYSQL_DATABASE: lamp_trivia_game
+            MYSQL_USER: trivia_user
+            MYSQL_PASSWORD:
+                trivia_pass
+                # 1 = true
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - './db:/docker-entrypoint-initdb.d'
+    phpmyadmin:
+        container_name: 'php-myadmin'
+        image: phpmyadmin
+        ports:
+            - 8000:80
+        environment:
+            PMA_HOST: db
+            PMA_PORT: 3306
