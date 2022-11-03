@@ -45,7 +45,7 @@ INSERT INTO `users` (`user_id`, `name`, `username`, `password`) VALUES
 CREATE TABLE `guesses` (
   `guess_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `date` varchar(16) NOT NULL DEFAULT 'CURDATE()',
+  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   `correct` tinyint(1) NOT NULL,
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -57,6 +57,6 @@ ALTER TABLE `guesses`
   MODIFY `guess_id` int NOT NULL AUTO_INCREMENT;
 COMMIT;
 
-INSERT INTO `guesses` (`guess_id`, `user_id`, `date`, `correct`) VALUES (NULL, '1', 'CURDATE()', '0');
+INSERT INTO `guesses` (`guess_id`, `user_id`, `date`, `correct`) VALUES (NULL, '1', CURRENT_TIMESTAMP(), '0');
 
-INSERT INTO `guesses` (`guess_id`, `user_id`, `date`, `correct`) VALUES (NULL, '1', 'CURDATE()', '1');
+INSERT INTO `guesses` (`guess_id`, `user_id`, `date`, `correct`) VALUES (NULL, '1', CURRENT_TIMESTAMP(), '1');

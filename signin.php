@@ -34,7 +34,9 @@ if(isset($_POST['submit'])) {
             if(mysqli_num_rows($result) > 0) {
                 $row = $result -> fetch_assoc();
                 $nameToBeStored = $row["name"];
-                setcookie("trivia-user", $nameToBeStored, time() + 86400);
+                $idToBeStored = $row["user_id"];
+                setcookie("trivia-name", $nameToBeStored, time() + 86400);
+                setcookie("trivia-id", $idToBeStored, time() + 86400);
                 ?>
                     <script type="text/javascript">
                         window.location.href = 'http://localhost/questions.php';
