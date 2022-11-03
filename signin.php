@@ -32,10 +32,16 @@ if(isset($_POST['submit'])) {
 
         if($result) {
             if(mysqli_num_rows($result) > 0) {
-                echo 'user exists!';
+                $row = $result -> fetch_assoc();
+                $nameToBeStored = $row["name"];
+                setcookie("trivia-user", $nameToBeStored, time() + 86400);
+                ?>
+                    <script type="text/javascript">
+                        window.location.href = 'http://localhost/questions.php';
+                    </script>
+                <?php
             } else {
-                echo 'user does not exist';
-                // navigate to next page...
+                echo 'User not found.  Trying signing up instead.';
             }
         }
     } else {
@@ -69,7 +75,7 @@ if(isset($_POST['submit'])) {
             <input name='password' type='password'>
             <div><?php echo $passwordErr ? $passwordErr : null; ?></div>
             <br>
-            <input type='submit' value='submit' name='submit'>
+            <input type='submit' value='Submit' name='submit'>
             <label for='navigateToSignUp'>Sign Up Instead</label>
             <input name='navigateToSignUp' type='submit' value='Sign Up' />
         </form>

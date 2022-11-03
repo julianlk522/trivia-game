@@ -23,6 +23,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `users` (
   `user_id` int NOT NULL,
+  `name` varchar(16) NOT NULL,
   `username` varchar(16) NOT NULL,
   `password` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -34,8 +35,8 @@ ALTER TABLE `users`
   MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
-INSERT INTO `users` (`user_id`, `username`, `password`) VALUES
-(1, 'julian', 'julianpass');
+INSERT INTO `users` (`user_id`, `name`, `username`, `password`) VALUES
+(1, 'Julian', 'julian', 'julianpass');
 
 --
 -- Table structure for table `guesses`

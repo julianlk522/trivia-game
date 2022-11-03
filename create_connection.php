@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 $connect = new mysqli('db', 'trivia_user', 'trivia_pass', 'lamp_trivia_game');
 

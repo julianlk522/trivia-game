@@ -1,4 +1,5 @@
 <?php
+
 $connect = require "create_connection.php";
 
 $name = $username = $password = '';
@@ -33,7 +34,7 @@ if(isset($_POST['submit'])) {
     }
 
     if(empty($nameErr) && empty($usernameErr) && empty($passwordErr)) {
-        $checkUserSql= "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+        $checkUserSql= "SELECT * FROM users WHERE username = '$username'";
         $testResult = $connect->query($checkUserSql);
 
         if($testResult) {
@@ -44,7 +45,7 @@ if(isset($_POST['submit'])) {
                 echo '<br>';
                 echo '<br>';
 
-                $insertSql= "INSERT INTO users (username, password) VALUES ('$username', '$password')";
+                $insertSql= "INSERT INTO users (name, username, password) VALUES ('$name', '$username', '$password')";
 
                 $connect->query($insertSql);
                 echo 'New user created successfully!';
