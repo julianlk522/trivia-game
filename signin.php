@@ -1,13 +1,15 @@
 <?php
-session_start();
-
 $connect = require "create_connection.php";
 
 $username = $password = '';
 $usernameErr = $passwordErr = '';
 
-if(array_key_exists('navigateToSignUp', $_POST)) {
-    header('Location: /signup.php');
+if(isset($_POST['navigateToSignUp'])) {
+    ?>
+        <script type="text/javascript">
+            window.location.href = 'http://localhost/signup.php';
+        </script>
+    <?php
 }
 
 if(isset($_POST['submit'])) {
@@ -25,10 +27,6 @@ if(isset($_POST['submit'])) {
     }
 
     if(empty($usernameErr) && empty($passwordErr)) {
-        echo 'Successful form submission!';
-        echo '<br>';
-        echo '<br>';
-
         $sql= "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
         $result = $connect->query($sql);
 
@@ -37,43 +35,45 @@ if(isset($_POST['submit'])) {
                 echo 'user exists!';
             } else {
                 echo 'user does not exist';
+                // navigate to next page...
             }
         }
-
-        // if(mysqli_query($connect, $sql)) {
-        //     echo 'Let\'s see...';
-        //     echo '<br>';
-        //     echo '<br>';
-        //     var_dump()
-        // } else {
-        //     echo 'Ruh roh';
-        //     echo '<br>';
-        //     echo '<br>';
-        // }
-        // header('Location: /index.php');
     } else {
-        echo 'Missing form info, please try again';
+        echo 'Missing username or password input, please try again';
         echo '<br>';
         echo '<br>';
     }
 }
-
-// session_destroy();
 ?>
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In to Trivia Game</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+</head>
+<body>
+<main style="text-align: center; max-width: 60%;">
     <h1>Welcome to the Trivia Game!</h1>
-    <h2>Sign In to begin</h2>
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-        <label for='username'>Username: </label>
-        <input name='username'>
-        <div><?php echo $usernameErr ? $usernameErr : null; ?></div>
-        <br>
-        <label for='password'>Password: </label>
-        <input name='password' type='password'>
-        <div><?php echo $passwordErr ? $passwordErr : null; ?></div>
-        <br>
-        <input type='submit' value='submit' name='submit'>
-        <label for='navigateToSignUp'>Sign Up Instead</label>
-        <input name='navigateToSignUp' type='submit' value='Go' />
-    </form>
+        <h2>Sign In to begin</h2>
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+            <label for='username'>Username: </label>
+            <input name='username'>
+            <div><?php echo $usernameErr ? $usernameErr : null; ?></div>
+            <br>
+            <label for='password'>Password: </label>
+            <input name='password' type='password'>
+            <div><?php echo $passwordErr ? $passwordErr : null; ?></div>
+            <br>
+            <input type='submit' value='submit' name='submit'>
+            <label for='navigateToSignUp'>Sign Up Instead</label>
+            <input name='navigateToSignUp' type='submit' value='Sign Up' />
+        </form>
+</main>
+</body>
+</html>
     
