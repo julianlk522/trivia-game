@@ -1,13 +1,15 @@
 <?php
 $connect = require "create_connection.php";
 
+$id = '';
+$name = '';
 $incorrectGuessesToday = 0;
 $guessesLeft = 3;
 $guessOrGuesses = 'guesses ';
 
 if(isset($_COOKIE['trivia-name']) && isset($_COOKIE['trivia-id'])) {
-    $name = $_COOKIE['trivia-name'];
     $id = $_COOKIE['trivia-id'];
+    $name = $_COOKIE['trivia-name'];
 }
 
 if(isset($_POST['continue'])) {
@@ -18,12 +20,12 @@ if(isset($_POST['continue'])) {
     <?php
 }
 
-//  incorrect guesses per id
-$sql= "SELECT COUNT(a.user_id) as wrong_guesses FROM 
+//  incorrect guesses today per id
+$incorrectGuessesTodaySql= "SELECT COUNT(a.user_id) as wrong_guesses FROM 
     (SELECT guess_id, user_id, DATE_FORMAT(date, '%Y-%m-%d') as date, CURDATE() as today, correct
     FROM guesses) as a
 WHERE a.user_id = $id AND a.date = a.today AND a.correct = 0;";
-    $result = $connect->query($sql);
+$result = $connect->query($incorrectGuessesTodaySql);
 
 if($result) {
     if(mysqli_num_rows($result) > 0) {
