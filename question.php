@@ -1,7 +1,7 @@
 <?php
 /* 
 
-insert rows into guesses table when user submits
+redirect when guessesLeft computes to 0
 
 */
 $connect = require "create_connection.php";
@@ -65,10 +65,10 @@ if($totalGuessesResult) {
         $totalGuessesRow = $totalGuessesResult->fetch_assoc();
         $totalGuessesToday = $totalGuessesRow['total_guesses_today'];
         $dailyQuestionNumber = $totalGuessesToday + 1;
-        if($dailyQuestionNumber > 5) {
-            $difficultyLevel = 'medium';
-        } else if ($dailyQuestionNumber > 10) {
+        if($dailyQuestionNumber > 10) {
             $difficultyLevel = 'hard';
+        } else if ($dailyQuestionNumber > 5) {
+            $difficultyLevel = 'medium';
         }
     } else {
         echo 'Can\'t find guess data.  Come fix me!';
