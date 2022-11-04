@@ -19,12 +19,7 @@ if(isset($_POST['continue'])) {
         </script>
     <?php
 }
-
-//  incorrect guesses today per id
-$incorrectGuessesTodaySql= "SELECT COUNT(a.user_id) as wrong_guesses FROM 
-    (SELECT guess_id, user_id, DATE_FORMAT(date, '%Y-%m-%d') as date, CURDATE() as today, correct
-    FROM guesses) as a
-WHERE a.user_id = $id AND a.date = a.today AND a.correct = 0;";
+$incorrectGuessesTodaySql = require "incorrect_guesses_query.php";
 $result = $connect->query($incorrectGuessesTodaySql);
 
 if($result) {
@@ -37,8 +32,6 @@ if($result) {
         echo 'Can\'t find guess data.  Come fix me!';
     }
 }
-
-return $guessesLeft;
 ?>
 
 

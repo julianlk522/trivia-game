@@ -5,7 +5,6 @@ insert rows into guesses table when user submits
 
 */
 $connect = require "create_connection.php";
-$guessesLeft = require "ready.php";
 
 $questionMessage = '';
 $questionChoices = [];
@@ -41,16 +40,29 @@ if(isset($_POST['checkAnswer']) && isset($_POST['answerSelect'])) {
     $guessErr = 'Please select an answer before submitting';
 }
 
+$incorrectGuessesTodaySql = require "incorrect_guesses_query.php";
+$incorrectGuessesResult = $connect->query($incorrectGuessesTodaySql);
+
+if($incorrectGuessesResult) {
+    if(mysqli_num_rows($incorrectGuessesResult) > 0) {
+        $guessesRow = $incorrectGuessesResult->fetch_assoc();
+        $incorrectGuessesToday = $guessesRow['wrong_guesses'];
+        $guessesLeft = 3 - $incorrectGuessesToday;
+    } else {
+        echo 'Can\'t find guess data.  Come fix me!';
+    }
+}
+
 $totalGuessesTodaySql = "SELECT COUNT(a.user_id) as total_guesses_today, a.user_id as id FROM 
 (SELECT guess_id, user_id, DATE_FORMAT(date, '%Y-%m-%d') as date, CURDATE() as today, correct
 FROM guesses) as a
 WHERE a.date = a.today AND a.user_id = $id
 GROUP BY id;";
-$result = $connect->query($totalGuessesTodaySql);
+$totalGuessesResult = $connect->query($totalGuessesTodaySql);
 
-if($result) {
-    if(mysqli_num_rows($result) > 0) {
-        $totalGuessesRow = $result->fetch_assoc();
+if($totalGuessesResult) {
+    if(mysqli_num_rows($totalGuessesResult) > 0) {
+        $totalGuessesRow = $totalGuessesResult->fetch_assoc();
         $totalGuessesToday = $totalGuessesRow['total_guesses_today'];
         $dailyQuestionNumber = $totalGuessesToday + 1;
         if($dailyQuestionNumber > 5) {
