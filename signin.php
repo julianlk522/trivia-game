@@ -27,24 +27,22 @@ if(isset($_POST['submit'])) {
     }
 
     if(empty($usernameErr) && empty($passwordErr)) {
-        $sql= "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-        $result = $connect->query($sql);
+        $checkUserSql= "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+        $checkResult = $connect->query($checkUserSql);
 
-        if($result) {
-            if(mysqli_num_rows($result) > 0) {
-                $row = $result -> fetch_assoc();
-                $nameToBeStored = $row["name"];
-                $idToBeStored = $row["user_id"];
-                setcookie("trivia-name", $nameToBeStored, time() + 86400);
-                setcookie("trivia-id", $idToBeStored, time() + 86400);
-                ?>
-                    <script type="text/javascript">
-                        window.location.href = 'http://localhost/questions.php';
-                    </script>
-                <?php
-            } else {
-                echo 'User not found.  Trying signing up instead.';
-            }
+        if($checkResult && mysqli_num_rows($checkResult) > 0) {
+            $row = $checkResult -> fetch_assoc();
+            $nameToBeStored = $row["name"];
+            $idToBeStored = $row["user_id"];
+            setcookie("trivia-name", $nameToBeStored, time() + 86400);
+            setcookie("trivia-id", $idToBeStored, time() + 86400);
+            ?>
+                <script type="text/javascript">
+                    window.location.href = 'http://localhost/ready.php';
+                </script>
+            <?php
+        } else {
+            echo 'User not found.  Try re-typing your password or signing up instead';
         }
     } else {
         echo 'Missing username or password input, please try again';

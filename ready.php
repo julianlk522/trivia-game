@@ -55,7 +55,7 @@ if(isset($_COOKIE['trivia-name']) && isset($_COOKIE['trivia-id'])) {
 <body>
 <main style="text-align: center; max-width: 60%;">
     <h1>Are You Ready?</h1>
-    <h2><?php echo $name ? "$name" : null; ?></h2>
+    <h2><?php echo $name ? ucwords($name) : null; ?></h2>
     <h2>
         <?php
             echo "You have ${guessesLeft} ${guessOrGuesses} left for today";

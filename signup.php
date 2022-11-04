@@ -35,27 +35,38 @@ if(isset($_POST['submit'])) {
 
     if(empty($nameErr) && empty($usernameErr) && empty($passwordErr)) {
         $checkUserSql= "SELECT * FROM users WHERE username = '$username'";
-        $testResult = $connect->query($checkUserSql);
+        $checkResult = $connect->query($checkUserSql);
 
-        if($testResult) {
-            if(mysqli_num_rows($testResult) > 0) {
-                echo 'User already exists!  Trying signing in instead.';
-            } else {
-                echo 'user does not exist';
-                echo '<br>';
-                echo '<br>';
-
-                $insertSql= "INSERT INTO users (name, username, password) VALUES ('$name', '$username', '$password')";
-
-                $connect->query($insertSql);
-                echo 'New user created successfully!';
-                // navigate to next page...
-            }
+        if($checkResult && mysqli_num_rows($checkResult) > 0) {
+            echo 'User already exists!  Trying signing in instead.';
         } else {
-            echo 'Missing form info, please try again';
-            echo '<br>';
-            echo '<br>';
+            $insertSql= "INSERT INTO users (name, username, password) VALUES ('$name', '$username', '$password')";
+            $connect->query($insertSql);
+            
+            $selectUserDataSql= "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+            $selectResult = $connect->query($selectUserDataSql);
+    
+            if($selectResult && mysqli_num_rows($selectResult) > 0) {
+                $row = $selectResult -> fetch_assoc();
+                $nameToBeStored = $row["name"];
+                $idToBeStored = $row["user_id"];
+                setcookie("trivia-name", $nameToBeStored, time() + 86400);
+                setcookie("trivia-id", $idToBeStored, time() + 86400);
+                ?>
+                    <script type="text/javascript">
+                        window.location.href = 'http://localhost/ready.php';
+                    </script>
+                <?php
+            } else {
+                echo 'Error: could not create or locate newly created user data';
+                echo '<br>';
+                echo '<br>';
+            }
         }
+    } else {
+        echo 'Missing form info, please try again';
+            echo '<br>';
+            echo '<br>';
     }
 }
 ?>
