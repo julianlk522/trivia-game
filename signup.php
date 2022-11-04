@@ -97,8 +97,7 @@ if(isset($_POST['submit'])) {
             <div><?php echo $passwordErr ? $passwordErr : null; ?></div>
             <br>
             <input type='submit' value='Submit' name='submit'>
-            <label for='navigateToSignIn'>Sign In Instead</label>
-            <input name='navigateToSignIn' type='submit' value='Sign In' />
+            <button name='navigateToSignIn' class='secondary'>Sign In Instead</button>
         </form>
     </main>
 </body>

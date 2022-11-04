@@ -76,8 +76,7 @@ if(isset($_POST['submit'])) {
             <div><?php echo $passwordErr ? $passwordErr : null; ?></div>
             <br>
             <input type='submit' value='Submit' name='submit'>
-            <label for='navigateToSignUp'>Sign Up Instead</label>
-            <input name='navigateToSignUp' type='submit' value='Sign Up' />
+            <button name='navigateToSignUp' class='secondary'>Sign Up Instead</button>
         </form>
 </main>
 </body>
