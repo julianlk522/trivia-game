@@ -37,6 +37,8 @@ if($result) {
         echo 'Can\'t find guess data.  Come fix me!';
     }
 }
+
+return $guessesLeft;
 ?>
 
 
