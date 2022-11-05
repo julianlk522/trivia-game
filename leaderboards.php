@@ -59,7 +59,7 @@ if($userScoresResult) {
             <tbody>
                 <?php foreach ($userScores as $key => $score): ?>
                     <tr scope="row">
-                        <td><?= $key ?></td>
+                        <td><?= ucwords($key) ?></td>
                         <td><?= $score ?></td>
                     </tr>
                 <?php endforeach; ?>
