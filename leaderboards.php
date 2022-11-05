@@ -6,7 +6,8 @@ FROM
 	(SELECT guess_id, users.user_id as id, users.name as name, DATE_FORMAT(date, '%Y-%m-%d') as date, CURDATE() as today, correct
     FROM guesses JOIN users ON guesses.user_id = users.user_id) as a
 WHERE a.date = a.today AND a.correct = 1
-GROUP BY a.name;";
+GROUP BY a.name
+ORDER BY count(a.id) DESC;";
 $userScoresResult = $connect->query($scoresTodaySql);
 
 $date = date("m/d/Y");
