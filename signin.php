@@ -4,14 +4,6 @@ $connect = require "create_connection.php";
 $username = $password = '';
 $usernameErr = $passwordErr = '';
 
-if(isset($_POST['navigateToSignUp'])) {
-    ?>
-        <script type="text/javascript">
-            window.location.href = 'http://localhost/signup.php';
-        </script>
-    <?php
-}
-
 if(isset($_POST['submit'])) {
 
     if(empty($_POST['username'])) {
@@ -63,20 +55,30 @@ if(isset($_POST['submit'])) {
     <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
 </head>
 <body>
-<main style="text-align: center; max-width: 60%;">
-    <h1>Welcome to the Trivia Game!</h1>
+<main style="max-width: 60%;">
+    <header style="text-align: center;">
+        <h1>Welcome to the Trivia Game!</h1>
         <h2>Sign In to begin</h2>
+    </header>
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
             <label for='username'>Username: </label>
             <input name='username'>
             <div><?php echo $usernameErr ? $usernameErr : null; ?></div>
+
             <br>
+
             <label for='password'>Password: </label>
             <input name='password' type='password'>
             <div><?php echo $passwordErr ? $passwordErr : null; ?></div>
+
             <br>
+
             <input type='submit' value='Submit' name='submit'>
-            <button name='navigateToSignUp' class='secondary'>Sign Up Instead</button>
+
+            <div style="display: flex; justify-content: space-evenly;">
+                <a href='http://localhost/signup.php' role='button' style="width: 50%;" class="contrast">Sign Up Instead</a>
+                <a href='http://localhost/leaderboards.php' role='button' style="width: 50%;" class="secondary">Show Daily Leaderboards</a>
+            </div>
         </form>
 </main>
 </body>

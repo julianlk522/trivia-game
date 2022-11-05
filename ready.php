@@ -12,13 +12,6 @@ if(isset($_COOKIE['trivia-name']) && isset($_COOKIE['trivia-id'])) {
     $name = $_COOKIE['trivia-name'];
 }
 
-if(isset($_POST['continue'])) {
-    ?>
-        <script type="text/javascript">
-            window.location.href = 'http://localhost/question.php';
-        </script>
-    <?php
-}
 $incorrectGuessesTodaySql = require "incorrect_guesses_query.php";
 $result = $connect->query($incorrectGuessesTodaySql);
 
@@ -27,6 +20,13 @@ if($result) {
         $guessesRow = $result->fetch_assoc();
         $incorrectGuessesToday = $guessesRow['wrong_guesses'];
         $guessesLeft = 3 - $incorrectGuessesToday;
+        if($guessesLeft === 0) {
+            ?>
+                <script type="text/javascript">
+                    window.location.href = 'http://localhost/game_over.php';
+                </script>
+            <?php
+        }
         $guessOrGuesses = $guessesLeft == 1 ? 'guess ' : 'guesses ';
     } else {
         echo 'Can\'t find guess data.  Come fix me!';
@@ -54,9 +54,11 @@ if($result) {
             echo "You have ${guessesLeft} ${guessOrGuesses} left for today";
         ?>
     </h2>
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-        <button name='continue'>Continue to Questions</button>
-    </form>
+
+    <br>
+
+    <a href='http://localhost/question.php' role='button' style="width: 50%; margin-bottom: 1rem;">Begin</a>
+    <a href='http://localhost/leaderboards.php' role='button' style="width: 50%;" class="secondary">Show Daily Leaderboards</a>
 </main>
 </body>
 </html>

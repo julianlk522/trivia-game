@@ -9,14 +9,6 @@ if(isset($_COOKIE['trivia-name']) && isset($_COOKIE['trivia-id'])) {
     $name = $_COOKIE['trivia-name'];
 }
 
-if(isset($_POST['leaderboards'])) {
-    ?>
-        <script type="text/javascript">
-            window.location.href = 'http://localhost/leaderboards.php';
-        </script>
-    <?php
-}
-
 //  correct guesses today per id
 $correctGuessesTodaySql="SELECT COUNT(a.user_id) as correct_guesses FROM 
     (SELECT guess_id, user_id, DATE_FORMAT(date, '%Y-%m-%d') as date, CURDATE() as today, correct
@@ -47,9 +39,10 @@ if($correctGuessesResult) {
 <main style="text-align: center; max-width: 60%;">
     <h1>Sorry <?php echo $name ? $name : "friend" ?>, you're all out of guesses!</h1>
     <h2>You got <?php echo $correctGuessesToday ? ucwords($correctGuessesToday) : null; ?> points</h2>
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-        <button name='leaderboards'>View Daily Leaderboards</button>
-    </form>
+    
+    <br>
+
+    <a href="http://localhost/leaderboards.php" role="button" style="width: 50%;" class="contrast">Show Daily Leaderboards</a>
 </main>
 </body>
 </html>

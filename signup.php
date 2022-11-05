@@ -5,14 +5,6 @@ $connect = require "create_connection.php";
 $name = $username = $password = '';
 $nameErr = $usernameErr = $passwordErr = '';
 
-if(isset($_POST['navigateToSignIn'])) {
-    ?>
-        <script type="text/javascript">
-            window.location.href = 'http://localhost/signin.php';
-        </script>
-    <?php
-}
-
 if(isset($_POST['submit'])) {
 
     if(empty($_POST['name'])) {
@@ -80,24 +72,36 @@ if(isset($_POST['submit'])) {
     <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
 </head>
 <body>
-    <main style="text-align: center; max-width: 60%;">
-    <h1>Welcome to the Trivia Game!</h1>
-        <h2>Sign up to begin</h2>
+    <main style="max-width: 60%;">
+    <header style="text-align: center;">
+        <h1>Welcome to the Trivia Game!</h1>
+        <h2>Sign Up to begin</h2>
+    </header>
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
             <label for='name'>Name: </label>
             <input name='name'>
             <div><?php echo $nameErr ? $nameErr : null; ?></div>
+
             <br>
+
             <label for='username'>Username: </label>
             <input name='username'>
             <div><?php echo $usernameErr ? $usernameErr : null; ?></div>
+
             <br>
+
             <label for='password'>Password: </label>
             <input name='password' type='password'>
             <div><?php echo $passwordErr ? $passwordErr : null; ?></div>
+
             <br>
+
             <input type='submit' value='Submit' name='submit'>
-            <button name='navigateToSignIn' class='secondary'>Sign In Instead</button>
+
+            <div style="display: flex; justify-content: space-evenly;">
+                <a href='http://localhost/signin.php' role='button' style="width: 50%;" class="contrast">Sign In Instead</a>
+                <a href='http://localhost/leaderboards.php' role='button' style="width: 50%;" class="secondary">Show Daily Leaderboards</a>
+            </div>
         </form>
     </main>
 </body>
