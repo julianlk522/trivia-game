@@ -2,7 +2,7 @@
 
 A big thanks goes to **https://the-trivia-api.com/** who provide the API making this project possible!
 
-Project styling was bootstrapped using the [**PicoCSS Framework**](https://picocss.com/ 'PicoCSS landing page')
+Project styling was bootstrapped using the [**PicoCSS Framework**](https://picocss.com/ 'PicoCSS landing page').
 
 ## Description
 
@@ -20,9 +20,9 @@ Project styling was bootstrapped using the [**PicoCSS Framework**](https://picoc
 
 <br>
 
-🔐 When you start the app you will have the option to create a new account with a name, username and password.
+🔐 When you start the app you will have the option to create a new account with a _name_, _username_ and _password_.
 
--   This will allow you to store your scores so that they can appear on the daily score leaderboards along with your chosen name.
+-   This will allow you to store your scores so that they can appear on the daily score leaderboards along with your chosen _name_.
 
 <div align='center' style="margin: 1rem 0"><img src='readme/signup.webp' alt='Auth screen' width='300' /></div>
 
@@ -78,7 +78,7 @@ The Trivia Game currently requires **Docker** to run. If Docker is installed, yo
 docker-compose up
 ```
 
-This will build and start the preconfigured images for the Apache server, MySQL database and phpMyAdmin interface
+This will build and start the preconfigured images for the Apache server, MySQL database and phpMyAdmin interface.
 
 The Apache server will run on port 80. You can then access the _sign-in_ screen and begin playing the game by navigating to **http://localhost/signin.php**
 
