@@ -23,31 +23,6 @@ $questionChoices = [];
 $questionAnswer = '';
 $filteredQuestionAnswer = '';
 
-if(isset($_COOKIE['trivia-name']) && isset($_COOKIE['trivia-id'])) {
-    $id = $_COOKIE['trivia-id'];
-    $name = $_COOKIE['trivia-name'];
-}
-
-//  request question data from API, decode and shuffle answer in with choices
-$triviaEndpointHandle = curl_init("https://the-trivia-api.com/api/questions?limit=1&difficulty=${difficultyLevel}");
-
-curl_setopt($triviaEndpointHandle, CURLOPT_RETURNTRANSFER, true);
-$response = curl_exec($triviaEndpointHandle);
-curl_close($triviaEndpointHandle);
-
-$rawTriviaData = json_decode($response, true);
-$triviaPropertiesArray = $rawTriviaData[0];
-
-$questionMessage = $triviaPropertiesArray['question'];
-$questionChoices = $triviaPropertiesArray['incorrectAnswers'];
-$questionAnswer = $triviaPropertiesArray['correctAnswer'];
-$filteredQuestionAnswer = str_replace("&nbsp;", "", $questionAnswer);
-array_push($questionChoices, $filteredQuestionAnswer);
-shuffle($questionChoices);
-foreach($questionChoices as $questionChoice) {
-    $questionChoice = ucwords($questionChoice);
-}
-
 //  query for incorrect guesses, determine guesses left for today
 function queryUserIncorrectGuesses() {
     global $connect;
@@ -104,6 +79,39 @@ function queryUserTotalGuesses() {
     }
 }
 
+//  request question data from API, decode and shuffle answer in with choices
+function fetchAndParseTriviaData() {
+    global $difficultyLevel;
+    global $questionMessage;
+    global $questionChoices;
+    global $questionAnswer;
+    global $filteredQuestionAnswer;
+
+    $triviaEndpointHandle = curl_init("https://the-trivia-api.com/api/questions?limit=1&difficulty=${difficultyLevel}");
+
+    curl_setopt($triviaEndpointHandle, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($triviaEndpointHandle);
+    curl_close($triviaEndpointHandle);
+
+    $rawTriviaData = json_decode($response, true);
+    $triviaPropertiesArray = $rawTriviaData[0];
+
+    $questionMessage = $triviaPropertiesArray['question'];
+    $questionChoices = $triviaPropertiesArray['incorrectAnswers'];
+    $questionAnswer = $triviaPropertiesArray['correctAnswer'];
+    $filteredQuestionAnswer = str_replace("&nbsp;", "", $questionAnswer);
+    array_push($questionChoices, $filteredQuestionAnswer);
+    shuffle($questionChoices);
+    foreach($questionChoices as $questionChoice) {
+        $questionChoice = ucwords($questionChoice);
+    }
+}
+
+if(isset($_COOKIE['trivia-name']) && isset($_COOKIE['trivia-id'])) {
+    $id = $_COOKIE['trivia-id'];
+    $name = $_COOKIE['trivia-name'];
+}
+
 //  if answer selected and user clicks check answer then test if the answer was correct and insert a row into the guesses table
 if(isset($_POST['checkAnswer']) && isset($_POST['answerSelect'])) {
     $selected = $_POST['answerSelect'];
@@ -119,6 +127,8 @@ if(isset($_POST['checkAnswer']) && isset($_POST['answerSelect'])) {
     } else {
         queryUserIncorrectGuesses();
         queryUserTotalGuesses();
+        //  use dailyQuestionNumber to define correct API endpoint based on difficultyLevel
+        fetchAndParseTriviaData();
     }
 
 //  Display error if user submits with no answer selected
@@ -129,6 +139,7 @@ if(isset($_POST['checkAnswer']) && isset($_POST['answerSelect'])) {
 } else {
     queryUserIncorrectGuesses();
     queryUserTotalGuesses();
+    fetchAndParseTriviaData();
 }
 ?>
 
