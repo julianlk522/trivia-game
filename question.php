@@ -85,7 +85,6 @@ function fetchAndParseTriviaData() {
     global $questionMessage;
     global $questionChoices;
     global $questionAnswer;
-    global $filteredQuestionAnswer;
 
     $triviaEndpointHandle = curl_init("https://the-trivia-api.com/api/questions?limit=1&difficulty=${difficultyLevel}");
 
@@ -99,12 +98,8 @@ function fetchAndParseTriviaData() {
     $questionMessage = $triviaPropertiesArray['question'];
     $questionChoices = $triviaPropertiesArray['incorrectAnswers'];
     $questionAnswer = $triviaPropertiesArray['correctAnswer'];
-    $filteredQuestionAnswer = str_replace("&nbsp;", "", $questionAnswer);
-    array_push($questionChoices, $filteredQuestionAnswer);
+    array_push($questionChoices, $questionAnswer);
     shuffle($questionChoices);
-    foreach($questionChoices as $questionChoice) {
-        $questionChoice = ucwords($questionChoice);
-    }
 }
 
 if(isset($_COOKIE['trivia-name']) && isset($_COOKIE['trivia-id'])) {
@@ -181,13 +176,13 @@ if(isset($_POST['checkAnswer']) && isset($_POST['answerSelect'])) {
             <select name='answerSelect'>
                 <option value="" disabled selected>Choose your answer</option>
                 <?php foreach($questionChoices as $choice): ?>
-                    <option value="<?php echo $choice; ?>">
-                        <?php echo $choice; ?>
+                    <option value="<?php echo str_replace(array("\"", "\'", "&nbsp;"),array("&quot;, &quot;", ""), ucfirst($choice)); ?>">
+                        <?php echo str_replace(array("\"", "\'", "&nbsp;"),array("&quot;, &quot;", ""), ucfirst($choice)); ?>
                     </option>
                 <?php endforeach; ?>
                 </select>
 
-            <input type="hidden" name='correct' value=<?php $filteredQuestionAnswer ? var_export($filteredQuestionAnswer) : null ?>>
+            <input type="hidden" name='correct' value="<?php echo $questionAnswer ? str_replace(array("\"", "\'", "&nbsp;"),array("&quot;, &quot;", ""), ucfirst($questionAnswer)) : null; ?>">
 
             <button name='checkAnswer'>Submit</button>
         </form>
